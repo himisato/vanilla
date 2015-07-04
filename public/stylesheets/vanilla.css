@@ -18,18 +18,24 @@ body{
 }
 div#time{
   text-align: center;
-  font-size: 40px;
-  font-family: serif;
+  font-size: 60px;
+  font-family: eucrosiapc;
+  color: #663300;
   background-color: #fff;
   padding: 20px;
+  margin: 10px 0;
 }
 
 div#fotter
 {
   position: fixed;
   bottom: 0;
-  text-align: center;
   background-color: #fff;
   padding: 20px;
   width: 100%;
+}
+
+img
+{
+  margin: 30px;
 }
