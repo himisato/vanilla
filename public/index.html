@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/vanilla.css" type="text/css">
+<body>
+
+
+<img src='/images/stop_btn.png' />
+<div id='time'></div>
+<img src='/images/btn_snooze.png' />
+
+<br>
+<input type='time' />
+
+<script>
+!(function()
+{
+  var timeFormat = d3.time.format('%H:%M %p');
+  setInterval(function()
+  {
+    d3.select('div#time').text(timeFormat(new Date()));
+  },200);
+//  d3.select('body').append('svg').attr('width','100%').attr('height','100%').append('rect').attr({width:'100%', height:'100%', fill:'#000'})
+})();
+</script>
