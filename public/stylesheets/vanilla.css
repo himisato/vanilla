@@ -6,14 +6,30 @@ html{
 body{
   height: 100%;
   min-height: 100%;
+  padding: 0;
   background-image: url('/images/background.png');
   text-align: center;
 }
-
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 div#time{
   text-align: center;
   font-size: 40px;
   font-family: serif;
   background-color: #fff;
   padding: 20px;
+}
+
+div#fotter
+{
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  width: 100%;
 }
