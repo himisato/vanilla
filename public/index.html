@@ -5,14 +5,17 @@
 <link rel="stylesheet" href="/stylesheets/vanilla.css" type="text/css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <body>
-	<img id='topscreen' src='/images/top_image.png' style='width:100%;height:100%;position:absolute;top:0;left:0;margin:0;z-index:100'>
 	<img src='/images/stop_btn.png' />
 	<div id='time'></div>
 	<img src='/images/btn_snooze.png' />
 	<div id='fotter'>
+<!--
 		<i style='float:left;' class="fa fa-clock-o fa-3x"></i>
 		<a href="bell.html"><i class="fa fa-bell-o fa-3x"></i></a>
 		<i style='float:right;' class="fa fa-cog fa-3x"></i>
+-->
+    	<a href="bell.html"><img src='/images/settei.png' class='icon' /></a>
+
 	</div>
 
 
@@ -26,7 +29,7 @@
   },200);
 	d3.select('#topscreen').on('click',function()
 	{
-		d3.select(this).transition().duration(10000).style('left','-1000px');
+		d3.select(this).transition().duration(2000).style('left','-1000px');
 	});
 //  d3.select('body').append('svg').attr('width','100%').attr('height','100%').append('rect').attr({width:'100%', height:'100%', fill:'#000'})
 })();

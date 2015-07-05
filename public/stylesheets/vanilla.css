@@ -34,7 +34,11 @@ div#fotter
   padding: 20px;
   width: 100%;
 }
-
+img.icon
+{
+  margin:0;
+  width: 72px;
+}
 img
 {
   margin: 30px;
