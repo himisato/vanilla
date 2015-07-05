@@ -12,7 +12,7 @@
       <a href='index.html'>
       <ul style='float:left;' class='clearfix'>
 			  <li style="float:left;"><i class="fa fa-chevron-left fa-2x"></i>
-        <li style="float:left;"><p>&nbsp;&nbsp;戻る</p></li>
+        <li style="float:left;"><p>戻る</p></li>
       </ul>
     </a>
 			<h2>ボイスセレクト</h2>
@@ -21,7 +21,7 @@
 
 
   <article class='tab clearfix'>
-    <div id='setting_tab' class='tab-page clearfix' style='opacity:1.0;'>
+    <div id='setting_tab' class='tab-page clearfix' style='opacity:1.0;display:block;'>
       <ul id='settings' class='clearfix'>
         <li class='clearfix'>時間設定 <input class='pull-right' name='time' type='time' /></li>
         <li class='clearfix'>音量   <p class='pull-right' id='volume_display'>5</p><input class='pull-right' name='volume' type="range" value='5' min="0" max="10"></li>
@@ -30,7 +30,7 @@
         <li class='clearfix'><select id='voice_list'></select></li>
       </ul>
     </div>
-    <div id='clock_tab' class='tab-page clearfix' style='opacity:0.0;'>
+    <div id='clock_tab' class='tab-page clearfix' style='opacity:0.0;display:none;'>
     	<div id='current_time'></div>
     </div>
   </article>
@@ -46,6 +46,7 @@
   var ringing = false;
   var setting = false;
   var open_can_audio = new Audio( "/audio/a-1-1 toshishita.mp4" );
+  var remaining = 0;
   var data = [
     {
       name:'年下の彼',
@@ -83,37 +84,47 @@
   });
   d3.select('i#clock_icon').on('click',function()
   {
-    d3.select('div#clock_tab').transition().style('opacity',1.0);
-    d3.select('div#setting_tab').transition().style('opacity',0.0);
+    d3.select('div#clock_tab').transition().style('opacity',1.0).style('display','block');
+    d3.select('div#setting_tab').transition().style('opacity',0.0).style('display','none');
     setting = true;
-    open_can_audio.load();
-    open_can_audio.play();
-//    open_can_audio.stop();
   });
   d3.select('i#setting_icon').on('click',function()
   {
-    d3.select('div#clock_tab').transition().style('opacity',0.0);
-    d3.select('div#setting_tab').transition().style('opacity',1.0);
+    d3.select('div#clock_tab').transition().style('opacity',0.0).style('display','none');
+    d3.select('div#setting_tab').transition().style('opacity',1.0).style('display','block');
   });
   d3.select('ul#settings').select('input[name=time]').property('value',inputFormat(new Date()));
-  d3.select('#current_time').on('click', function()
-  {
-    open_can_audio.load();
-    open_can_audio.play();
-
-  });
   function tryRing()
   {
     if (setting && !ringing)
     {
-      if (new Date() >= inputFormat.parse(d3.select('ul#settings').select('input[name=time]').property('value')) )
+      if ((new Date()).getTime() > inputFormat.parse(d3.select('ul#settings').select('input[name=time]').property('value')).getTime() )
       {
-//        open_can_audio.load();
-//        open_can_audio.play();
-        d3.select('#current_time').node().click();
-
-//                                                        d3.select('body').append('audio').attr('src','/audio/a-1-1 toshishita.mp4').attr('autoplay','true').attr('loop','');
         ringing=true;
+        setTimeout(function()
+        {
+          d3.select('body').append('audio').attr('src','/audio/a-1-1 toshishita.mp4').attr('autoplay','true').attr('loop','true');
+          remaining = 3;
+          var clientWidth = d3.select('body').node().clientWidth;
+          var clientHeight = d3.select('body').node().clientHeight;
+          d3.select('div#clock_tab').transition().style('opacity',1.0);
+          d3.select('div#setting_tab').transition().style('opacity',0.0);
+          d3.select('div#clock_tab').selectAll('.heart').data(d3.range(3)).enter().append('div').style('position','absolute').style('top',function(d){return (Math.random()*clientHeight*0.5)+'px';}).style('left',function(){return (Math.random()*clientWidth*0.5)+'px';})
+          .append('img').attr('src','/images/stop_btn.png')
+          .on('click',function()
+          {
+            d3.select(this).on('click',null).transition().style('opacity',0.0).remove();
+            remaining--;
+            if (remaining <= 0)
+            {
+              d3.select('audio').node().pause();
+              d3.select('audio').remove();
+              var a = new Audio('/audio/a-1-2 toshishita.mp4');
+              a.load();
+              a.play();
+            }
+          });
+        }, 3000);
       }
     }
   }
