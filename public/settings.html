@@ -3,25 +3,68 @@
 <head>
 	<meta name="viewport" content="width=device-width">
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-	<link rel="stylesheet" href="/stylesheets/vanilla.css" type="text/css">
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/stylesheets/vanilla.css" type="text/css" />
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
 </head>
 <body>
-	<header>
+	<header class='clearfix'>
 		<div>
-			<li>
-				<a href="index.html"><ul><i style="float:left;" class="fa fa-chevron-left fa-2x"></i></ul>
-				<ul><p>戻る</p></ul></a>
-				<ul><h3>ボイスセレクト</h3></ul>
-			</li>
+      <a href='index.html'>
+      <ul style='float:left;' class='clearfix'>
+			  <li style="float:left;"><i class="fa fa-chevron-left fa-2x"></i>
+        <li style="float:left;"><p>戻る</p></li>
+      </ul>
+    </a>
+			<h2>ボイスセレクト</h2>
 		</div>
 	</header>
+  <article class='tab clearfix'>
+    <div class='tab-page clearfix'>
+      <ul id='settings' class='clearfix'>
+        <li class='clearfix'>時間設定 <input class='pull-right' name='time' type='time' /></li>
+        <li class='clearfix'>音量   <p class='pull-right' id='volume_display'>5</p><input class='pull-right' name='volume' type="range" value='5' min="0" max="10"></li>
+        <li class='clearfix'>スヌーズ継続時間 <p class='pull-right' id='duration_display'>5</p><input class='pull-right' name='duration' type="range" value='5' min="1" max="30"></li>
+        <li class='clearfix'>バイブレーション <input class='pull-right' name='vibration' type='checkbox' /></li>
+        <li class='clearfix'><select id='voice_list'></select></li>
+      </ul>
+    </div>
+  </article>
 	<div id='fotter'>
 	<i style='float:left;' class="fa fa-clock-o fa-3x"></i>
 	<a href="bell.html"><i class="fa fa-bell-o fa-3x"></i></a>
 	<i style='float:right;' class="fa fa-cog fa-3x"></i>
 </div>
-
+<script>
+  var data = [
+    {
+      name:'年下の彼',
+    },
+    {
+      name:'執事'
+    },
+    {
+      name:'同棲先輩'
+    },
+    {
+      name:'理想の夫'
+    },
+    {
+      name:'体育会系'
+    },
+    {
+      name:'関西イケメン'
+    }
+  ];
+  d3.select('select#voice_list').selectAll('option').data(data).enter().append('option').text(function(d){return d.name;});
+  d3.select('ul#settings').select('input[name=volume]').on('change',function()
+  {
+    d3.select('p#volume_display').text(d3.select(this).property('value'));
+  });
+  d3.select('ul#settings').select('input[name=duration]').on('change',function()
+  {
+    d3.select('p#duration_display').text(d3.select(this).property('value'));
+  });
+</script>
 
 </body>
 </html>
