@@ -18,8 +18,10 @@
 			<h2>ボイスセレクト</h2>
 		</div>
 	</header>
+
+
   <article class='tab clearfix'>
-    <div class='tab-page clearfix'>
+    <div id='setting_tab' class='tab-page clearfix' style='opacity:1.0;'>
       <ul id='settings' class='clearfix'>
         <li class='clearfix'>時間設定 <input class='pull-right' name='time' type='time' /></li>
         <li class='clearfix'>音量   <p class='pull-right' id='volume_display'>5</p><input class='pull-right' name='volume' type="range" value='5' min="0" max="10"></li>
@@ -28,16 +30,30 @@
         <li class='clearfix'><select id='voice_list'></select></li>
       </ul>
     </div>
+    <div id='clock_tab' class='tab-page clearfix' style='opacity:0.0;'>
+    	<div id='current_time'></div>
+    </div>
   </article>
+
+
 	<div id='fotter'>
-	<i style='float:left;' class="fa fa-clock-o fa-3x"></i>
-	<a href="bell.html"><i class="fa fa-bell-o fa-3x"></i></a>
-	<i style='float:right;' class="fa fa-cog fa-3x"></i>
-</div>
+  	<i id='clock_icon' style='float:left;' class="fa fa-clock-o fa-3x"></i>
+  	<i id='setting_icon' style='float:right;' class="fa fa-cog fa-3x"></i>
+  </div>
 <script>
+  var timeFormat = d3.time.format('%I:%M %p');
+  var inputFormat = d3.time.format('%H:%M');
+  var ringing = false;
+  var setting = false;
+  var open_can_audio = new Audio( "/audio/a-1-1 toshishita.mp4" );
   var data = [
     {
       name:'年下の彼',
+      audio: {
+        p1: {wake: 'a-1-1 toshishita.mp4', gm: 'a-1-2 toshishita.mp4'},
+        p2: {wake: 'a-2-1 toshishita.mp4', gm: 'a-2-2 toshishita.mp4'},
+        p3: {wake: 'a-3-1 toshishita.mp4', gm: 'a-3-2 toshishita.mp4'}
+      }
     },
     {
       name:'執事'
@@ -55,6 +71,7 @@
       name:'関西イケメン'
     }
   ];
+
   d3.select('select#voice_list').selectAll('option').data(data).enter().append('option').text(function(d){return d.name;});
   d3.select('ul#settings').select('input[name=volume]').on('change',function()
   {
@@ -64,6 +81,48 @@
   {
     d3.select('p#duration_display').text(d3.select(this).property('value'));
   });
+  d3.select('i#clock_icon').on('click',function()
+  {
+    d3.select('div#clock_tab').transition().style('opacity',1.0);
+    d3.select('div#setting_tab').transition().style('opacity',0.0);
+    setting = true;
+    open_can_audio.load();
+    open_can_audio.play();
+//    open_can_audio.stop();
+  });
+  d3.select('i#setting_icon').on('click',function()
+  {
+    d3.select('div#clock_tab').transition().style('opacity',0.0);
+    d3.select('div#setting_tab').transition().style('opacity',1.0);
+  });
+  d3.select('ul#settings').select('input[name=time]').property('value',inputFormat(new Date()));
+  d3.select('#current_time').on('click', function()
+  {
+    open_can_audio.load();
+    open_can_audio.play();
+
+  });
+  function tryRing()
+  {
+    if (setting && !ringing)
+    {
+      if (new Date() >= inputFormat.parse(d3.select('ul#settings').select('input[name=time]').property('value')) )
+      {
+//        open_can_audio.load();
+//        open_can_audio.play();
+        d3.select('#current_time').node().click();
+
+//                                                        d3.select('body').append('audio').attr('src','/audio/a-1-1 toshishita.mp4').attr('autoplay','true').attr('loop','');
+        ringing=true;
+      }
+    }
+  }
+  setInterval(function()
+  {
+    d3.select('div#current_time').text(timeFormat(new Date()));
+    tryRing();
+  },200);
+
 </script>
 
 </body>
